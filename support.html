@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nestis: Support</title>
 <link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
 <style>
 :root{ --bg:#0E100F; --ink:#F3F1EC; --ink-2:rgba(243,241,236,.72); --ink-3:rgba(243,241,236,.55); --sage:#8FBF7F; --sage-ink:#0E100F; }
 @media (prefers-color-scheme: light){
@@ -13,8 +16,9 @@
 body { font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 max-width: 680px; margin: 0 auto; padding: 40px 20px 80px; line-height: 1.6;
 color: var(--ink); background: var(--bg); }
+h1, h2 { font-family: "Fraunces", "Georgia", serif; font-style: italic; font-weight: 500; letter-spacing: -.01em; }
 h1 { font-size: 28px; margin-bottom: 4px; }
-h2 { font-size: 18px; margin-top: 32px; }
+h2 { font-size: 19px; margin-top: 32px; }
 p, li { font-size: 15px; color: var(--ink-2); }
 .updated { color: var(--ink-3); font-size: 13px; margin-bottom: 32px; }
 a { color: var(--sage); }
@@ -29,12 +33,12 @@ border-radius: 12px; font-weight: 600; font-size: 15px; }
 <body>
 <a class="back" href="index.html">&larr; Nestis</a>
 <h1>Support</h1>
-<p class="updated">Nestis, a fasting timer for iPhone, iPad, and Mac</p>
+<p class="updated">Nestis, a fasting timer for iPhone</p>
 <p>Need help with Nestis? We usually reply within a day or two.</p>
 <a class="mail-button" href="mailto:hello@nestis.app">Email hello@nestis.app</a>
-<h2>How do I sync between my iPhone and iPad?</h2>
-<p>Nestis syncs automatically through iCloud. Make sure you're signed into the
-same iCloud account on both devices, with iCloud Drive enabled in
+<h2>How do I back up my data?</h2>
+<p>Nestis backs up your fasting history automatically through iCloud. Make
+sure you're signed in with iCloud Drive enabled in
 <strong>Settings &gt; [your name] &gt; iCloud</strong>.</p>
 <h2>How do I restore a purchase on a new device?</h2>
 <p>Open Nestis, go to <strong>Settings</strong>, and tap
@@ -55,6 +59,6 @@ description of the issue and, if possible, your device model and iOS
 version. Screenshots help a lot.</p>
 <h2>More</h2>
 <p>See our <a href="privacy.html">Privacy Policy</a> and
-<a href="terms.html">Terms of Use</a>.</p>
+<a href="https://www.apple.com/legal/itunes/appstore/dev/stdeula" target="_blank" rel="noopener">Terms of Use</a> (Apple's standard EULA, the same one used in the app).</p>
 </body>
 </html>
