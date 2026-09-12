@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Nestis is a calm intermittent fasting timer for iPhone, iPad, and Mac. Track fasts, see your metabolic phase, build streaks, and sync privately over iCloud.">
+<meta property="og:title" content="Nestis">
+<meta property="og:description" content="A calm intermittent fasting timer for iPhone, iPad, and Mac.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nestis.app/">
+<meta property="og:image" content="https://nestis.app/img/og-card.jpg">
+<link rel="canonical" href="https://nestis.app/">
+<meta name="theme-color" content="#0E100F">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<title>Nestis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,400;1,500;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+/* ── tokens ─────────────────────────────────────────────────────────
+Lifted from the app's own dark theme (FastCycle/Theme.swift) so the
+site and the product read as one thing. Dark-first, sage accent.     */
+:root{
+--bg:#0E100F;
+--bg-elev:#17191A;
+--card:#1C1F20;
+--card-hi:#222527;
+--line:rgba(255,255,255,.07);
+--line-hi:rgba(255,255,255,.12);
+--ink:#F3F1EC;
+--ink-2:rgba(243,241,236,.72);
+--ink-3:rgba(243,241,236,.55);
+--sage:#8FBF7F;
+--sage-soft:rgba(143,191,127,.18);
+--sage-ink:#0E100F;
+--clay:#C97D5C;
+--shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -14px rgba(0,0,0,.7);
+--display:"Fraunces","Georgia",serif;
+--body:"Space Grotesk","SF Pro Text",-apple-system,system-ui,sans-serif;
+}
+@media (prefers-color-scheme: light){
+:root:not([data-theme="dark"]){
+--bg:#F5F2EC;
+--bg-elev:#ECE8E0;
+--card:#FFFFFF;
+--card-hi:#F9F6F1;
+--line:rgba(14,16,15,.08);
+--line-hi:rgba(14,16,15,.14);
+--ink:#1A1C1B;
+--ink-2:rgba(26,28,27,.70);
+--ink-3:rgba(26,28,27,.50);
+--sage:#6F9E5F;
+--sage-soft:rgba(111,158,95,.16);
+--shadow:0 1px 2px rgba(60,40,20,.05), 0 12px 32px -14px rgba(60,40,20,.18);
+}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+margin:0;
+background:var(--bg);
+color:var(--ink);
+font-family:var(--body);
+font-size:17px;
+line-height:1.6;
+-webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block;height:auto}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-style:italic;text-wrap:balance;margin:0;letter-spacing:-.01em;line-height:1.08}
+p{margin:0}
+:focus-visible{outline:2px solid var(--sage);outline-offset:3px;border-radius:4px}
+.shell{max-width:1000px;margin:0 auto;padding:0 24px}
+/* ── the checklist rail ───────────────────────────────────────────── */
+.list{position:relative;padding-block:56px 0}
+.item{
+position:relative;
+display:grid;grid-template-columns:42px minmax(0,1fr);
+column-gap:30px;
+padding-block:52px;
+border-bottom:1px solid var(--line);
+}
+.item:last-of-type{border-bottom:0}
+.item:not(:last-of-type)::before{
+content:"";position:absolute;left:20px;top:100px;width:1px;
+height:calc(100% - 48px);
+background:var(--line-hi);
+}
+.tick{
+grid-column:1;width:42px;height:42px;border-radius:50%;
+background:var(--bg-elev);
+border:2px solid var(--line-hi);
+display:grid;place-items:center;
+transition:background-color .45s cubic-bezier(.2,.7,.3,1),border-color .45s ease;
+}
+.tick svg{width:20px;height:20px;overflow:visible}
+.tick path{
+fill:none;stroke:var(--bg);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;
+stroke-dasharray:26;stroke-dashoffset:26;
+transition:stroke-dashoffset .5s cubic-bezier(.2,.7,.3,1) .12s;
+}
+.item.done .tick{background:var(--sage);border-color:var(--sage)}
+.item.done .tick path{stroke-dashoffset:0}
+@media (prefers-reduced-motion: reduce){
+.tick,.tick path{transition:none}
+}
+.body{grid-column:2}
+.eyebrow{
+font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+color:var(--ink-3);margin-bottom:14px;font-family:var(--body);
+}
+h2{font-size:clamp(28px,3.6vw,38px);font-weight:500;margin-bottom:14px}
+.section-lede{color:var(--ink-2);max-width:52ch;font-style:normal}
+/* ── hero ─────────────────────────────────────────────────────────── */
+.hero .body{display:flex;flex-direction:column;align-items:flex-start;gap:26px}
+.mark{display:flex;align-items:center;gap:20px}
+.mark img{width:76px;height:76px;border-radius:20px;box-shadow:var(--shadow)}
+.mark .wordmark{font-family:var(--display);font-style:italic;font-weight:600;font-size:30px;letter-spacing:-.01em}
+.mark .seller{font-size:13.5px;color:var(--ink-3);margin-top:1px;font-family:var(--body);font-style:normal}
+h1{font-size:clamp(40px,6.4vw,64px);font-weight:500;max-width:15ch}
+h1 em{font-style:italic;color:var(--sage)}
+.lede{font-size:clamp(18px,2.1vw,21px);color:var(--ink-2);max-width:48ch;font-style:normal;font-family:var(--body)}
+.cta-line{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.notify-form{display:flex;gap:10px;flex-wrap:wrap}
+.notify-form input[type="email"]{
+font:inherit;font-size:15px;padding:13px 16px;border-radius:12px;
+border:1px solid var(--line-hi);background:var(--card);color:var(--ink);
+min-width:240px;
+}
+.notify-form input[type="email"]::placeholder{color:var(--ink-3)}
+.notify-form button{
+font:inherit;font-weight:600;font-size:15px;padding:13px 22px;border-radius:12px;
+border:none;background:var(--sage);color:var(--sage-ink);cursor:pointer;
+transition:transform .18s ease;
+}
+.notify-form button:hover{transform:translateY(-2px)}
+.status-pill{
+display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.09em;
+text-transform:uppercase;padding:5px 12px;border-radius:999px;
+background:var(--sage-soft);color:var(--sage);
+}
+.price-note{font-size:14.5px;color:var(--ink-3);line-height:1.45;font-family:var(--body)}
+.price-note b{color:var(--ink-2);font-weight:600}
+/* ── screenshot placeholder ───────────────────────────────────────── */
+.shot-placeholder{
+width:100%;aspect-ratio:9/16;max-width:280px;border-radius:28px;
+background:linear-gradient(160deg,var(--card),var(--card-hi));
+border:1px dashed var(--line-hi);
+display:flex;flex-direction:column;align-items:center;justify-content:center;
+gap:10px;color:var(--ink-3);text-align:center;padding:24px;
+}
+.shot-placeholder svg{width:36px;height:36px;opacity:.6}
+.shot-placeholder span{font-size:13px;font-family:var(--body)}
+.shot-row{display:flex;gap:24px;flex-wrap:wrap;margin-top:6px}
+.shot-row .shot-placeholder{width:200px;max-width:200px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:52px;align-items:start}
+.split .copy{display:flex;flex-direction:column;gap:14px}
+@media (max-width:840px){
+.split{grid-template-columns:minmax(0,1fr);gap:34px}
+}
+/* ── spec list ────────────────────────────────────────────────────── */
+.spec{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:2px 44px;margin-top:26px;list-style:none;padding:0;
+}
+.spec li{
+display:grid;grid-template-columns:16px 1fr;gap:12px;align-items:baseline;
+padding:11px 0;border-bottom:1px solid var(--line);
+font-size:16px;color:var(--ink-2);
+}
+.spec li b{color:var(--ink);font-weight:600}
+.spec li::before{
+content:"";width:8px;height:8px;border-radius:50%;
+background:var(--sage);transform:translateY(-2px);
+}
+.note{margin-top:22px;font-size:14.5px;color:var(--ink-3);max-width:52ch;font-family:var(--body)}
+/* ── platforms ────────────────────────────────────────────────────── */
+.plats{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:30px}
+.plat{
+background:var(--card);border:1px solid var(--line);border-radius:18px;
+padding:22px 22px 20px;display:flex;flex-direction:column;gap:8px;
+}
+.plat .glyph{color:var(--sage);margin-bottom:2px}
+.plat h3{font-size:19px;font-weight:500;font-style:italic}
+.plat p{font-size:14.5px;color:var(--ink-2);line-height:1.5;font-family:var(--body)}
+.pill{
+align-self:flex-start;font-size:11.5px;font-weight:600;letter-spacing:.09em;
+text-transform:uppercase;padding:4px 10px;border-radius:999px;
+background:var(--sage-soft);color:var(--sage);margin-top:4px;font-family:var(--body);
+}
+/* ── closing ──────────────────────────────────────────────────────── */
+.close{padding:64px 0 26px;display:flex;flex-direction:column;align-items:flex-start;gap:24px}
+.close h2{max-width:16ch}
+.contact{font-size:15.5px;color:var(--ink-2);max-width:56ch;line-height:1.55;font-family:var(--body)}
+.contact a{color:var(--sage);text-decoration-color:var(--sage-soft);text-underline-offset:3px}
+.contact a:hover{text-decoration-color:var(--sage)}
+footer{
+border-top:1px solid var(--line);padding:26px 0 60px;
+display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;
+font-size:14px;color:var(--ink-3);font-family:var(--body);
+}
+footer a{color:var(--ink-2);text-decoration-color:var(--line-hi);text-underline-offset:3px}
+footer a:hover{color:var(--sage)}
+footer .sp{margin-left:auto}
+@media (max-width:620px){
+.item{grid-template-columns:32px minmax(0,1fr);column-gap:18px;padding-block:40px}
+.tick{width:32px;height:32px}
+.tick svg{width:15px;height:15px}
+.item:not(:last-of-type)::before{left:15px;top:80px;height:calc(100% - 40px)}
+.shell{padding:0 20px}
+}
+</style>
+</head>
+<body>
+<main class="shell">
+<div class="list">
+<!-- 1 ── hero -->
+<section class="item hero">
+<div class="tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3.5 10.5 L8 15 L16.5 5"/></svg></div>
+<div class="body">
+<div class="mark">
+<img src="icon.png" alt="Nestis" width="76" height="76">
+<div>
+<div class="wordmark">Nestis</div>
+<div class="seller">Fasting timer for iPhone, iPad, and Mac</div>
+</div>
+</div>
+<span class="status-pill">Coming soon to the App&nbsp;Store</span>
+<h1>A fasting timer that feels <em>calm</em>, not clinical.</h1>
+<p class="lede">Nestis tracks your fast, shows the metabolic phase you're in, and builds streaks you can actually see. No account, no clutter, private sync over iCloud.</p>
+<div class="cta-line">
+<form class="notify-form" action="#" method="get" onsubmit="return false;">
+<input type="email" placeholder="you@example.com" aria-label="Email address" disabled>
+<button type="submit" disabled>Notify me</button>
+</form>
+</div>
+<p class="price-note"><b>Free to download.</b><br>iPhone, iPad, and Mac. No account, no sign-up.</p>
+</div>
+</section>
+<!-- 2 ── hero screenshot -->
+<section class="item">
+<div class="tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3.5 10.5 L8 15 L16.5 5"/></svg></div>
+<div class="body">
+<p class="eyebrow">One timer, every screen</p>
+<div class="shot-placeholder" style="max-width:260px">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+<span>Screenshot coming soon</span>
+</div>
+</div>
+</section>
+<!-- 3 ── the timer -->
+<section class="item">
+<div class="tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3.5 10.5 L8 15 L16.5 5"/></svg></div>
+<div class="body">
+<div class="split">
+<div class="copy">
+<p class="eyebrow">Track</p>
+<h2>Start a fast. Watch the phase change.</h2>
+<p class="section-lede">Pick a schedule, tap start, and Nestis carries you through it. A metabolic phase bar moves from Fed through Fat Burn to Ketosis, so you always know where you are, not just how much time is left.</p>
+<p class="section-lede">Choose a typographic, ring, or liquid timer, whichever reads best at a glance.</p>
+</div>
+<div class="shot-placeholder">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+<span>Screenshot coming soon</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 4 ── schedules -->
+<section class="item">
+<div class="tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3.5 10.5 L8 15 L16.5 5"/></svg></div>
+<div class="body">
+<div class="split">
+<div class="copy">
+<p class="eyebrow">Choose your schedule</p>
+<h2>16:8, 18:6, 20:4, or your own.</h2>
+<p class="section-lede">Five built-in presets cover the common protocols. Set custom hours, including OMAD, when you're ready to go further.</p>
+<p class="section-lede">Gentle milestone notifications mark the moments that matter, without nagging.</p>
+</div>
+<div class="shot-placeholder">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+<span>Screenshot coming soon</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 5 ── streaks & trends -->
+<section class="item">
+<div class="tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3.5 10.5 L8 15 L16.5 5"/></svg></div>
+<div class="body">
+<p class="eyebrow">See your progress</p>
+<h2>A streak you can see, a trend you can trust.</h2>
+<p class="section-lede" style="margin-bottom:30px">A six-week heatmap shows your current streak, your best, and every fast behind it. Trends turn a week of fasts into a pattern worth noticing.</p>
+<div class="shot-row">
+<div class="shot-placeholder">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+<span>Screenshot coming soon</span>
+</div>
+<div class="shot-placeholder">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+<span>Screenshot coming soon</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 6 ── widgets & live activity -->
+<section class="item">
+<div class="tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3.5 10.5 L8 15 L16.5 5"/></svg></div>
+<div class="body">
+<div class="split">
+<div class="copy">
+<p class="eyebrow">On the Lock Screen</p>
+<h2>Your fast, without opening the app.</h2>
+<p class="section-lede">A home screen widget and a Live Activity on the Lock Screen and Dynamic Island keep your elapsed time and phase in view, all the time.</p>
+</div>
+<div class="shot-placeholder">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+<span>Screenshot coming soon</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 7 ── feature list -->
+<section class="item">
+<div class="tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3.5 10.5 L8 15 L16.5 5"/></svg></div>
+<div class="body">
+<p class="eyebrow">What's in it</p>
+<h2>Simple enough to open and tap start.</h2>
+<p class="section-lede">Deep enough to see the shape of your fasting over months.</p>
+<ul class="spec">
+<li><span><b>Typographic, Ring &amp; Liquid timers</b>: pick the display that reads best to you</span></li>
+<li><span><b>5 schedule presets</b>: 12:12 through 20:4, plus custom hours and OMAD</span></li>
+<li><span><b>Metabolic phase bar</b>: Fed, Early Fast, Glycogen, Fat Burn, Ketosis, Autophagy</span></li>
+<li><span><b>Milestone notifications</b>: gentle nudges as you cross each phase</span></li>
+<li><span><b>Trends</b>: this week free, month and year with Pro</span></li>
+<li><span><b>Streaks</b>: a 6-week heatmap, current, best, and total</span></li>
+<li><span><b>Journal</b>: a note with every fast, mood and reflections</span></li>
+<li><span><b>Five accent colors</b>: Sage, Clay, Gold, Sky, and Lilac</span></li>
+<li><span><b>iCloud sync</b>: your history, on every device, free forever</span></li>
+<li><span><b>Widgets</b>: home screen, Lock Screen, and Live Activity</span></li>
+<li><span><b>Export</b>: JSON, PDF, and CSV, whenever you want your data out</span></li>
+<li><span><b>Mac app</b>: a native window, not a stretched iPad app</span></li>
+</ul>
+<p class="note">Unlimited journal entries, all timer styles, every accent, and full trend history come with Nestis Pro, available inside the app.</p>
+</div>
+</section>
+<!-- 8 ── platforms -->
+<section class="item">
+<div class="tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3.5 10.5 L8 15 L16.5 5"/></svg></div>
+<div class="body">
+<p class="eyebrow">Where it runs</p>
+<h2>Same fast, whichever device is closest.</h2>
+<p class="section-lede">Start it on the phone, check the trend on the iPad, review the month on the Mac. iCloud keeps all three current without you thinking about it.</p>
+<div class="plats">
+<div class="plat">
+<svg class="glyph" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+<rect x="7" y="2.5" width="10" height="19" rx="2.6"/><path d="M10.6 5.2h2.8"/>
+</svg>
+<h3>iPhone</h3>
+<p>The timer, milestone bar, and widgets. iOS&nbsp;18 or later.</p>
+<span class="pill">Coming soon</span>
+</div>
+<div class="plat">
+<svg class="glyph" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+<rect x="2.5" y="4.5" width="19" height="15" rx="2.4"/><path d="M9 4.5v15"/>
+</svg>
+<h3>iPad</h3>
+<p>The full timer and trends, laid out for the bigger screen. iPadOS&nbsp;18 or later.</p>
+<span class="pill">Coming soon</span>
+</div>
+<div class="plat">
+<svg class="glyph" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+<rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 20.5h8M12 17v3.5"/>
+</svg>
+<h3>Mac</h3>
+<p>A native window with its own menu bar. macOS&nbsp;15 or later, Apple&nbsp;silicon.</p>
+<span class="pill">Coming soon</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 9 ── privacy -->
+<section class="item">
+<div class="tick" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3.5 10.5 L8 15 L16.5 5"/></svg></div>
+<div class="body">
+<p class="eyebrow">Your data, yours</p>
+<h2>No account. No sign-up. No servers of ours.</h2>
+<p class="section-lede">Your fasting history stays yours, synced privately through your own iCloud account, straight between your devices. There's nothing to create, nothing to log into, and no copy of your data sitting on a server we run, because we don't run one.</p>
+</div>
+</section>
+</div><!-- /list -->
+<!-- closing -->
+<section class="close">
+<h2>Be the first to know.</h2>
+<p class="contact">Nestis is in final testing before its App&nbsp;Store launch. Questions, or want early access? Write to
+<a href="mailto:hello@nestis.app">hello@nestis.app</a>. Common questions are already answered on the
+<a href="support.html">support page</a>.</p>
+</section>
+<footer>
+<span>&copy; 2026 Nestis</span>
+<a href="support.html">Support</a>
+<a href="privacy.html">Privacy Policy</a>
+<a href="terms.html">Terms of Use</a>
+<span class="sp">A calm way to fast.</span>
+</footer>
+</main>
+<script>
+(function(){
+var items = document.querySelectorAll('.item');
+var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reduce || !('IntersectionObserver' in window)) {
+items.forEach(function(el){ el.classList.add('done'); });
+return;
+}
+var io = new IntersectionObserver(function(entries){
+entries.forEach(function(e){
+if (e.isIntersecting) { e.target.classList.add('done'); io.unobserve(e.target); }
+});
+}, { rootMargin: '0px 0px -22% 0px', threshold: 0.01 });
+items.forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>
