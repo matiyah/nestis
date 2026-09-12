@@ -14,13 +14,14 @@
 <link rel="icon" href="icon.png">
 <link rel="apple-touch-icon" href="icon.png">
 <title>Nestis</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,400;1,500;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
 <style>
 /* ── tokens ─────────────────────────────────────────────────────────
 Lifted from the app's own dark theme (FastCycle/Theme.swift) so the
-site and the product read as one thing. Dark-first, sage accent.     */
+site and the product read as one thing. Dark-first, sage accent.
+Fonts match the app's current system fallbacks (Typography.swift:
+useSystemFallbacks = true) — New York italic for display, San
+Francisco for body — rather than the Fraunces/Space Grotesk files,
+which aren't bundled into the app yet.                              */
 :root{
 --bg:#0E100F;
 --bg-elev:#17191A;
@@ -36,8 +37,8 @@ site and the product read as one thing. Dark-first, sage accent.     */
 --sage-ink:#0E100F;
 --clay:#C97D5C;
 --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 32px -14px rgba(0,0,0,.7);
---display:"Fraunces","Georgia",serif;
---body:"Space Grotesk","SF Pro Text",-apple-system,system-ui,sans-serif;
+--display:ui-serif,"New York","Georgia",serif;
+--body:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: light){
 :root:not([data-theme="dark"]){
@@ -120,6 +121,7 @@ h2{font-size:clamp(28px,3.6vw,38px);font-weight:500;margin-bottom:14px}
 .mark .seller{font-size:13.5px;color:var(--ink-3);margin-top:1px;font-family:var(--body);font-style:normal}
 h1{font-size:clamp(40px,6.4vw,64px);font-weight:500;max-width:15ch}
 h1 em{font-style:italic;color:var(--sage)}
+.etymology{font-family:var(--display);font-style:italic;font-size:16px;color:var(--ink-3);max-width:48ch}
 .lede{font-size:clamp(18px,2.1vw,21px);color:var(--ink-2);max-width:48ch;font-style:normal;font-family:var(--body)}
 .status-pill{
 display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.09em;
@@ -200,7 +202,8 @@ footer .sp{margin-left:auto}
 </div>
 <span class="status-pill">Coming soon to the App&nbsp;Store</span>
 <h1>A fasting timer that feels <em>calm</em>, not clinical.</h1>
-<p class="lede">Nestis tracks your fast, shows the metabolic phase you're in, and builds streaks you can actually see. No account, no clutter, private sync over iCloud.</p>
+<p class="etymology">Nestis (NESS-tiss), Greek for fasting.</p>
+<p class="lede">Nestis tracks your fast, shows the metabolic phase you're in, and builds streaks you can actually see. No account, no clutter, private backup over iCloud.</p>
 <p class="price-note"><b>Free to download.</b><br>iPhone. No account, no sign-up.</p>
 </div>
 </section>
